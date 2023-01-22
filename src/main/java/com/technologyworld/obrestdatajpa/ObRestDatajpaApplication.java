@@ -1,5 +1,6 @@
 package com.technologyworld.obrestdatajpa;
 
+import com.technologyworld.obrestdatajpa.config.SwaggerConfig;
 import com.technologyworld.obrestdatajpa.entities.Book;
 import com.technologyworld.obrestdatajpa.repository.BookRepository;
 import org.springframework.boot.SpringApplication;

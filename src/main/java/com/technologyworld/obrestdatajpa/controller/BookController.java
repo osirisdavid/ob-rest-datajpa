@@ -2,11 +2,14 @@ package com.technologyworld.obrestdatajpa.controller;
 
 import com.technologyworld.obrestdatajpa.entities.Book;
 import com.technologyworld.obrestdatajpa.repository.BookRepository;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.List;
 import java.util.Objects;
@@ -43,7 +46,8 @@ public class BookController {
      * @return
      */
     @GetMapping("api/books/{id}")
-    public ResponseEntity<Book> findById(@PathVariable("id") Long id){
+    @ApiOperation("Buscar un libro por clave primaria id Long")
+    public ResponseEntity<Book> findById(@ApiParam("Clave primaria tipo Long") @PathVariable("id") Long id){
         Optional<Book> bookOptional= bookRepository.findById(id);
         // Option 1
         if(bookOptional.isPresent())
@@ -94,6 +98,14 @@ public class BookController {
         return ResponseEntity.ok(book); // El libro devuelto tiene una clave primaria
     }
 
+    @ApiIgnore
+    @DeleteMapping("/api/books")
+    public ResponseEntity<Book> deleteAll(){
+        log.info("REST Request for delete all books");
+        bookRepository.deleteAll();
+        return ResponseEntity.noContent().build();
+    }
+
     @DeleteMapping("/api/books/{id}")
     public ResponseEntity<Book> delete(@PathVariable Long id){
         try{
@@ -106,13 +118,6 @@ public class BookController {
             ex.printStackTrace();
         }
         return ResponseEntity.noContent().build();   // Respuesta cuando se borra un contenido con éxito
-    }
-
-    @DeleteMapping("/api/books")
-    public ResponseEntity<Book> deleteAll(){
-        log.info("REST Request for delete all books");
-        bookRepository.deleteAll();
-        return ResponseEntity.noContent().build();
     }
 
 }
